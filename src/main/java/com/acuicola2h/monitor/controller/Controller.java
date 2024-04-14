@@ -20,16 +20,19 @@ import org.springframework.web.multipart.MultipartFile;
 import com.acuicola2h.monitor.model.DataEntry;
 import com.acuicola2h.monitor.service.DataEntryService;
 import com.acuicola2h.monitor.service.EmailService;
+import com.acuicola2h.monitor.service.ExcelBookService;
 import com.acuicola2h.monitor.util.Constants;
 
 @RestController
 @RequestMapping(Constants.CONTROLLER_PATH)
 public class Controller {
 	
+	ExcelBookService excelBookService;
 	DataEntryService dataEntryService;
 	EmailService emailService;
 	
-	public Controller(DataEntryService dataEntryService, EmailService emailService) {
+	public Controller(ExcelBookService excelBookService, DataEntryService dataEntryService, EmailService emailService) {
+		this.excelBookService = excelBookService;
 		this.dataEntryService = dataEntryService;
 		this.emailService = emailService;
 	}
@@ -46,10 +49,11 @@ public class Controller {
             Workbook workbook = WorkbookFactory.create(inputStream);
 
             // Process the Excel file
-            // ...
+            excelBookService.processExcelFile(workbook);
 
             return "File uploaded and processed successfully!";
         } catch (Exception e) {
+        	e.printStackTrace();
             return "Error during file upload: " + e.getMessage();
         }
     }

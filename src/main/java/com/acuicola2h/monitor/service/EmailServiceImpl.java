@@ -33,11 +33,6 @@ public class EmailServiceImpl implements EmailService {
     Properties properties = System.getProperties();
 	
 	public String sendEmail(List<String> list) {
-		// hMail Server
-	    //properties.put("mail.smtp.host", host);
-	    //properties.put("mail.smtp.port", "25"); // Default SMTP port is 25, change it if you use a different one
-	    //properties.put("mail.smtp.auth", "true");
-	    //properties.put("mail.smtp.starttls.enable", "true"); // Use SSL
 	    
 	    // Gmail SMTP
 	    properties.put("mail.smtp.host", "smtp.gmail.com");
@@ -53,7 +48,7 @@ public class EmailServiceImpl implements EmailService {
 		try {
             // Create a default MimeMessage object
             MimeMessage message = new MimeMessage(session);
-
+            
             // Set From: header field
             message.setFrom(new InternetAddress(from));
 
@@ -61,11 +56,16 @@ public class EmailServiceImpl implements EmailService {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 
             // Set Subject: header field
-            message.setSubject("This is the Subject Line!");
+            message.setSubject("Fish Tank Data Requires Your Attention!");
 
             // Now set the actual message
-            message.setText("This is the actual message");
-
+            //message.setText("The below entries were found in your data.");
+            StringBuilder sb = new StringBuilder();
+            for (String string : list) {
+            	sb.append(string);
+            	sb.append('\n');
+            }
+            message.setText(sb.toString());
             // Send message
             Transport.send(message);
             System.out.println("Sent message successfully....");
