@@ -3,6 +3,7 @@ package com.acuicola2h.monitor.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.Level;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.acuicola2h.monitor.model.DataEntry;
+import com.acuicola2h.monitor.util.LoggerUtility;
 
 @Service
 public class ExcelBookServiceImpl implements ExcelBookService {
@@ -49,7 +51,7 @@ public class ExcelBookServiceImpl implements ExcelBookService {
         }
         for (List<DataEntry> dataEntry : allTanks) {
         	for (DataEntry data : dataEntry) {
-        		System.out.println(data.toString());
+        		LoggerUtility.printLog(Level.INFO, data.toString());
         	}
         }
         //List of errors

@@ -76,6 +76,10 @@ public class Controller {
 		return new ResponseEntity<>("Done", HttpStatus.OK);
 	}
 	
+	/**
+	 * Testing emails
+	 * @return
+	 */
 	@GetMapping("/sendEmail")
 	public ResponseEntity<String> sendEmail() {
 		List<String> errors = new ArrayList<>();
