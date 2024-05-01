@@ -47,10 +47,8 @@ public class Controller {
         try (InputStream inputStream = file.getInputStream()) {
             // Get the workbook instance for the Excel file
             Workbook workbook = WorkbookFactory.create(inputStream);
-
             // Process the Excel file
             excelBookService.processExcelFile(workbook);
-
             return "File uploaded and processed successfully!";
         } catch (Exception e) {
         	e.printStackTrace();
