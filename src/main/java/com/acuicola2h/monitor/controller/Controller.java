@@ -34,7 +34,7 @@ public class Controller {
 		this.dataEntryService = dataEntryService;
 		this.emailService = emailService;
 	}
-	
+
 	@PostMapping(Constants.PROCESS_FILE_PATH)
     public List<String> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("sendEmail") String sendEmail) {
 		List<String> errorList = null;
