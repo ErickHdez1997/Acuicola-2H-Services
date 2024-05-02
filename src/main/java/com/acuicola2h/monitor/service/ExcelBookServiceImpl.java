@@ -6,6 +6,8 @@ import java.util.List;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,39 +19,16 @@ public class ExcelBookServiceImpl implements ExcelBookService {
 	@Autowired
 	EmailService emailService;
 	
-	//Can add a request parameter to state how many of the row should be validated.
-	public void processExcelFile(Workbook workbook) {
-		List<List<DataEntry>> allTanks = new ArrayList<>();
-		List<DataEntry> tankEntry = new ArrayList<>();
-		boolean flag = false; 
-        // Assuming all sheets have the same format and should be read
-        for (Sheet sheet : workbook) {
-            // Skip the header row by starting at 1 instead of 0
-            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
-                Row row = sheet.getRow(i);
-                if (row != null && row.getCell(0) != null && row.getCell(0).getNumericCellValue() != 0.0) {
-                	flag = true;
-                	DataEntry dataEntry = new DataEntry();
-                	dataEntry.setOxygen(row.getCell(0).getNumericCellValue());
-                	dataEntry.setPH(row.getCell(1).getNumericCellValue());
-                	dataEntry.setTemperature(row.getCell(2).getNumericCellValue());
-                	dataEntry.setSalinity(row.getCell(3).getNumericCellValue());
-                	dataEntry.setNitrite(row.getCell(4).getNumericCellValue());
-                	dataEntry.setNitrate(row.getCell(5).getNumericCellValue());
-                	dataEntry.setAmmonia(row.getCell(6).getNumericCellValue());
-                	dataEntry.setTurbinez(row.getCell(7).getNumericCellValue());
-                	dataEntry.setAlkalinide(row.getCell(8).getNumericCellValue());
-                	dataEntry.setDeaths((int)row.getCell(9).getNumericCellValue());
-                	dataEntry.setDate(row.getCell(10).getDateCellValue());
-                	tankEntry.add(dataEntry);
-                }
-            }
-            if (flag) allTanks.add(tankEntry); 
-            flag = false;
-        }
+	Logger log = LoggerFactory.getLogger(getClass());
+	
+
+	public List<String> processExcelFile(Workbook workbook, boolean sendEmail) {
+		List<List<DataEntry>> allTanks = null;
+        allTanks = readData(workbook, allTanks);
+        //Remove later
         for (List<DataEntry> dataEntry : allTanks) {
         	for (DataEntry data : dataEntry) {
-        		System.out.println(data.toString());
+        		log.debug("Data read: {}", data);
         	}
         }
         //List of errors
@@ -107,9 +86,48 @@ public class ExcelBookServiceImpl implements ExcelBookService {
         	}
         }
         
-        if (errorList.size() > 0) {
+        if (errorList.isEmpty()) {
+        	String recordsValidated = "All parameters are within acceptable bounds.";
+        	errorList.add(recordsValidated);
         	emailService.sendEmail(errorList);
         }
+        if (sendEmail) {
+        	emailService.sendEmail(errorList);
+        }
+        
+        return errorList;
+	}
+	
+	private List<List<DataEntry>> readData(Workbook workbook, List<List<DataEntry>> allTanks) {
+		allTanks = new ArrayList<>();
+		List<DataEntry> tankEntry = new ArrayList<>();
+		boolean flag = false; 
+        // Assuming all sheets have the same format and should be read
+        for (Sheet sheet : workbook) {
+            // Skip the header row by starting at 1 instead of 0
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                Row row = sheet.getRow(i);
+                if (row != null && row.getCell(0) != null && row.getCell(0).getNumericCellValue() != 0.0) {
+                	flag = true;
+                	DataEntry dataEntry = new DataEntry();
+                	dataEntry.setOxygen(row.getCell(0).getNumericCellValue());
+                	dataEntry.setPH(row.getCell(1).getNumericCellValue());
+                	dataEntry.setTemperature(row.getCell(2).getNumericCellValue());
+                	dataEntry.setSalinity(row.getCell(3).getNumericCellValue());
+                	dataEntry.setNitrite(row.getCell(4).getNumericCellValue());
+                	dataEntry.setNitrate(row.getCell(5).getNumericCellValue());
+                	dataEntry.setAmmonia(row.getCell(6).getNumericCellValue());
+                	dataEntry.setTurbinez(row.getCell(7).getNumericCellValue());
+                	dataEntry.setAlkalinide(row.getCell(8).getNumericCellValue());
+                	dataEntry.setDeaths((int)row.getCell(9).getNumericCellValue());
+                	dataEntry.setDate(row.getCell(10).getDateCellValue());
+                	tankEntry.add(dataEntry);
+                }
+            }
+            if (flag) allTanks.add(tankEntry); 
+            flag = false;
+        }
+        return allTanks;
 	}
 	
 }

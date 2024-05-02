@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "monitor.email.password",
+    "type": "java.lang.String",
+    "description": "A description for 'monitor.email.password'"
+  },
+  {
+    "name": "monitor.email.address",
+    "type": "java.lang.String",
+    "description": "A description for 'monitor.email.address'"
+  },
+  {
+    "name": "monitor.email.recipient",
+    "type": "java.lang.String",
+    "description": "A description for 'monitor.email.recipient'"
+  }
+]}

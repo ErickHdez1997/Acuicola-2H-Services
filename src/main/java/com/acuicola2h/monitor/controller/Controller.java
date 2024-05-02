@@ -1,7 +1,6 @@
 package com.acuicola2h.monitor.controller;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Workbook;
@@ -9,7 +8,6 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,51 +35,26 @@ public class Controller {
 		this.emailService = emailService;
 	}
 	
-	@PostMapping("/upload")
-    public String uploadFile(@RequestParam("file") MultipartFile file) {
-		
-        if (file.isEmpty()) {
-            return "Please select a file to upload.";
-        }
-
-        try (InputStream inputStream = file.getInputStream()) {
-            // Get the workbook instance for the Excel file
-            Workbook workbook = WorkbookFactory.create(inputStream);
-
-            // Process the Excel file
-            excelBookService.processExcelFile(workbook);
-
-            return "File uploaded and processed successfully!";
+	@PostMapping(Constants.PROCESS_FILE_PATH)
+    public List<String> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("sendEmail") String sendEmail) {
+		List<String> errorList = null;
+        try (InputStream inputStream = file.getInputStream(); Workbook workbook = WorkbookFactory.create(inputStream)) {
+            Boolean email = Boolean.parseBoolean(sendEmail);
+            errorList = excelBookService.processExcelFile(workbook, email);
+            return errorList;
         } catch (Exception e) {
         	e.printStackTrace();
-            return "Error during file upload: " + e.getMessage();
-        }
+            return errorList;
+        } 
     }
 	
-	/**
-	 * This one will be worked on in the future when using a full web app to process the data
-	 * @param dataEntry
-	 * @return
-	 */
+	// To do - For future features
 	@PostMapping(value = Constants.PROCESS_DATA_ENTRY_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> processDataEntry(@RequestBody DataEntry dataEntry) {
 		//Validate Request
 		//Process
 		//Placeholder
 		return new ResponseEntity<>(dataEntryService.processDataEntry(dataEntry), HttpStatus.OK);
-	}
-	
-	@PostMapping(Constants.PROCESS_FILE_PATH)
-	public ResponseEntity<String> processFile() {
-		return new ResponseEntity<>("Done", HttpStatus.OK);
-	}
-	
-	@GetMapping("/sendEmail")
-	public ResponseEntity<String> sendEmail() {
-		List<String> errors = new ArrayList<>();
-		errors.add("error");
-		emailService.sendEmail(errors);
-		return new ResponseEntity<>("Email sent", HttpStatus.OK);
 	}
 	
 }
