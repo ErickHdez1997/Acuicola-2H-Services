@@ -3,6 +3,7 @@ package com.acuicola2h.monitor.controller;
 import java.io.InputStream;
 import java.util.List;
 
+import org.apache.logging.log4j.Level;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import com.acuicola2h.monitor.service.DataEntryService;
 import com.acuicola2h.monitor.service.EmailService;
 import com.acuicola2h.monitor.service.ExcelBookService;
 import com.acuicola2h.monitor.util.Constants;
+import com.acuicola2h.monitor.util.LoggerUtility;
 
 @RestController
 @RequestMapping(Constants.CONTROLLER_PATH)
@@ -38,11 +40,13 @@ public class Controller {
 	@PostMapping(Constants.PROCESS_FILE_PATH)
     public List<String> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("sendEmail") String sendEmail) {
 		List<String> errorList = null;
+		LoggerUtility.log(getClass(), Level.INFO, "Entered upload method");
         try (InputStream inputStream = file.getInputStream(); Workbook workbook = WorkbookFactory.create(inputStream)) {
             Boolean email = Boolean.parseBoolean(sendEmail);
             errorList = excelBookService.processExcelFile(workbook, email);
             return errorList;
         } catch (Exception e) {
+        	//To do
         	e.printStackTrace();
             return errorList;
         } 

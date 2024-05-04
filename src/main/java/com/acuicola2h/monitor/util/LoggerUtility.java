@@ -7,22 +7,25 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class LoggerUtility {
-
-	private static Logger logger = LogManager.getLogger(LoggerUtility.class);
 	
-	public static void printLog(Level level, String message) {
+	private LoggerUtility() {}
+
+	private static Logger logger = null;
+	
+	public static void log(Class<?> clazz, Level level, Object ...obj) {
+		logger = LogManager.getLogger(clazz);
 		if (level == Level.TRACE) {
-			logger.trace(message);
+			logger.trace(obj);
 		} else if (level == Level.DEBUG) {
-			logger.debug(message);
+			logger.debug(obj);
 		} else if (level == Level.INFO) {
-			logger.info(message);
+			logger.info(obj);
 		} else if (level == Level.WARN) {
-			logger.warn(message);
+			logger.warn(obj);
 		} else if (level == Level.ERROR) {
-			logger.error(message);
+			logger.error(obj);
 		} else if (level == Level.FATAL) {
-			logger.fatal(message);
+			logger.fatal(obj);
 		}
 	}
 	

@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.acuicola2h</groupId>
-	<artifactId>monitor</artifactId>
+	<artifactId>Acuicola-2H-Monitor</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>monitor</name>
-	<description>Monitoring system for Acuicola 2H fish tank parameters.</description>
+	<description>Data tracking application for Acuicola 2H fish tank parameters.</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
