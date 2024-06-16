@@ -3,6 +3,8 @@
 *.classpath
 *.project
 *.settings/
+target/*
+src/main/resources/static/*
 
 # Log file
 *.log
