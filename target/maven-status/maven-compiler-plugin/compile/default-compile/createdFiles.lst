@@ -1,4 +1,5 @@
 com\acuicola2h\monitor\service\DataEntryServiceImpl.class
+com\acuicola2h\monitor\config\WebConfig.class
 com\acuicola2h\monitor\service\ExcelBookService.class
 com\acuicola2h\monitor\util\Constants.class
 com\acuicola2h\monitor\model\DataEntry.class
