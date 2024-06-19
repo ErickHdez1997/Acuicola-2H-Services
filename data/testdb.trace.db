@@ -1,0 +1,9 @@
+2024-06-18 22:16:15.355702-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "insert into [*]user (created_by,created_date,email,first_name,last_name,username,id) values (?,?,?,?,?,?,default)"; expected "identifier"; SQL statement:
+insert into user (created_by,created_date,email,first_name,last_name,username,id) values (?,?,?,?,?,?,default) [42001-224]
+2024-06-18 22:21:37.719681-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "insert into [*]user (created_by,created_date,email,first_name,last_name,username,id) values (?,?,?,?,?,?,default)"; expected "identifier"; SQL statement:
+insert into user (created_by,created_date,email,first_name,last_name,username,id) values (?,?,?,?,?,?,default) [42001-224]
+2024-06-18 22:21:38.528239-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "insert into [*]user (created_by,created_date,email,first_name,last_name,username,id) values (?,?,?,?,?,?,default)"; expected "identifier"; SQL statement:
+insert into user (created_by,created_date,email,first_name,last_name,username,id) values (?,?,?,?,?,?,default) [42001-224]
