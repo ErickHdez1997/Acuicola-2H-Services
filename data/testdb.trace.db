@@ -1,3 +1,6 @@
 2024-06-19 12:31:27.379923-04:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ACUICOLA_USER" not found (this database is empty); SQL statement:
 insert into acuicola_user (created_by,created_date,email,first_name,last_name,username,id) values (?,?,?,?,?,?,default) [42104-224]
+2024-06-24 20:41:14.958547-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FISH_TANK" not found; SQL statement:
+insert into fish_tank (name,id) values (?,default) [42102-224]

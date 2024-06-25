@@ -23,7 +23,7 @@ public class WebSecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/api/**", "/monitor/**", "/h2-console/**").permitAll()
+                .requestMatchers("/api/**", "/monitor/**", "/h2-console/**", "/tank/**", "/batches/**").permitAll()
                 .anyRequest().authenticated()
             );
 
