@@ -2,6 +2,10 @@ package com.acuicola2h.monitor.entity;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +23,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Table(name = "user_password")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class UserPassword {
 
     @Id
@@ -27,6 +32,8 @@ public class UserPassword {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
+    @ToString.Exclude
     private UserEntity user;
 
     @Column(nullable = false)
@@ -38,4 +45,7 @@ public class UserPassword {
     @Column(nullable = false)
     private LocalDateTime dateChanged;
 
+    public Long getUserId() {
+    	return this.user != null ? this.user.getId() : null;
+    }
 }

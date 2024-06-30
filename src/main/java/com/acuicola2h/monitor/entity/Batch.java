@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -24,6 +26,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Batch {
 
 	@Id
@@ -33,6 +36,7 @@ public class Batch {
     @ManyToOne
     @JoinColumn(name = "fish_tank_id", nullable = false)
     @JsonBackReference
+    @ToString.Exclude
     private FishTank fishTank;
 
     @Column(name = "start_date")
@@ -53,5 +57,9 @@ public class Batch {
     @OneToMany(mappedBy = "batch", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<TankMeasurement> measurements;
+    
+    public Long getFishTankId() {
+    	return this.fishTank != null ? this.fishTank.getId() : null;
+    }
 	
 }

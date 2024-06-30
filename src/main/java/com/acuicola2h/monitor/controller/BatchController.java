@@ -27,14 +27,16 @@ public class BatchController {
     @GetMapping("/active")
     public ResponseEntity<List<Batch>> getActiveBatches() {
         List<Batch> activeBatches = batchService.getActiveBatches();
-        log.info("Active Batches {}", activeBatches);
+        log.info("Active Batches: {}", activeBatches);
+        log.info("Measurement Id: {}", activeBatches.get(0).getMeasurements().get(0).getId());
+        log.info("Tank Number #{}", activeBatches.get(0).getFishTank().getId());
         return ResponseEntity.ok(activeBatches);
     }
     
     @GetMapping("/{batchId}")
     public ResponseEntity<Batch> getBatchById(@PathVariable Long batchId) {
         Optional<Batch> batch = batchService.getBatchById(batchId);
-        log.info("Batch {}", batch);
+        //log.info("Batch {}", batch);
         return batch.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 

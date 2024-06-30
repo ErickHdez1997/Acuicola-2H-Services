@@ -1,5 +1,8 @@
 package com.acuicola2h.monitor.service;
 
+import java.text.DecimalFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,24 +52,28 @@ public class TankMeasurementService {
         batch.setInProgress(true);
         batch.setFishPlanted(100);
         batch = batchService.saveBatch(batch);
-
+        
+        DecimalFormat df = new DecimalFormat("#.###");
+        
         // Create multiple dummy measurements
         List<TankMeasurement> measurements = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < (int)Math.round(Math.random()*50) ; i++) {
             TankMeasurement measurement = new TankMeasurement();
             measurement.setBatch(batch);
             measurement.setFishTank(fishTank);
-            measurement.setOxygen(5.5 + i);
-            measurement.setPH(7.0);
-            measurement.setTemperature(25.0 + i);
-            measurement.setSalinity(30.0);
-            measurement.setNitrate(1.8);
-            measurement.setNitrite(0.05);
-            measurement.setAmmonia(0.03);
-            measurement.setTurbine(10.0);
-            measurement.setAlkalinity(100.0);
-            measurement.setDeaths(0);
-            measurement.setDate(new Date());
+            measurement.setOxygen(Double.parseDouble(df.format(Math.random()*10)));
+            measurement.setPH(Double.parseDouble(df.format(Math.random()*12)));
+            measurement.setTemperature(Double.parseDouble(df.format(Math.random()*40)));
+            measurement.setSalinity(Double.parseDouble(df.format(Math.random()*30)));
+            measurement.setNitrate(Double.parseDouble(df.format(Math.random()*2)));
+            measurement.setNitrite(Double.parseDouble(df.format(Math.random())));
+            measurement.setAmmonia(Double.parseDouble(df.format(Math.random())));
+            measurement.setTurbine(Double.parseDouble(df.format(Math.random())));
+            measurement.setAlkalinity(Double.parseDouble(df.format(Math.random()*100)));
+            measurement.setDeaths((int)Math.round(Math.random()*40));
+            LocalDateTime dateTime = LocalDateTime.now();
+            LocalDateTime modifiedDateTime = dateTime.plusHours(12*i);
+            measurement.setDate(Date.from(modifiedDateTime.atZone(ZoneId.systemDefault()).toInstant()));
             measurements.add(tankMeasurementRepository.save(measurement));
         }
 
