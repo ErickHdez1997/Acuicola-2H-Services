@@ -1,0 +1,51 @@
+To Do:
+Admin User
+Create Batch
+Settings Page
+Add/Remove/Modify Entry
+Add/Remove/Modify Batch
+Highlight bad parameters in data chart
+
+------------------------------------------------
+
+Create Admin User
+	First user is always admin
+	Remaining users are not - can only be made admin by an admin
+
+------------------------------------------------
+
+Create Batch
+Select Tank 
+	Dropdown 24 options
+Select Start Date
+	Popup Date Picker
+Fish Planted
+	text box
+Submit
+	-> Check if selected tank is assigned to an active batch
+	-> If no, create batch
+
+------------------------------------------------
+
+Home Screen Updates 
+
+Nav Bar (Selecting will load the view below the nav bar)
+Summary - Manage Batches - Upload Document(?) - Settings - Logout 
+------
+Manage Batches
+Create batch
+Add/remove/modify entry
+------
+Summary
+# Of Active Batches
+# Of Parameters in danger last day & last 7 days
+# Of measurements entered
+Quick select to view data
+------
+Upload document (Remove?)
+------
+Settings Page
+Manage Users(?)
+Update Parameter thresholds
+
+	
