@@ -24,8 +24,6 @@ public class AuthController {
     
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> authenticateUser(@RequestBody LoginRequestDto loginRequest) {
-    	log.info(loginRequest.getUsername());
-    	log.info(loginRequest.getPassword());
     	String token = authService.authenticate(loginRequest);
     	log.info(token);
         if (token != null) {
