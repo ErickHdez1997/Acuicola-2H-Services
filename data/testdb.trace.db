@@ -913,3 +913,6 @@ Caused by: org.h2.jdbc.JdbcSQLInvalidAuthorizationSpecException: Wrong user name
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:522)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
 	... 60 more
+2024-07-02 16:54:42.763795-04:00 jdbc[113]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * [*]FROMTANK_MEASUREMENT"; SQL statement:
+SELECT * FROMTANK_MEASUREMENT [42000-224]

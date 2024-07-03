@@ -40,6 +40,9 @@ public class UserEntity {
 
     @Column(nullable = false, unique = true)
     private String email;
+    
+    @Column(nullable = false)
+    private boolean isAdmin;
 
     @Column(nullable = false)
     private LocalDateTime createdDate;

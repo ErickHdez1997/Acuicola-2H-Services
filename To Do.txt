@@ -1,5 +1,5 @@
 To Do:
-Admin User
+Implement Admin User Functionality
 Create Batch
 Settings Page
 Add/Remove/Modify Entry
@@ -8,9 +8,7 @@ Highlight bad parameters in data chart
 
 ------------------------------------------------
 
-Create Admin User
-	First user is always admin
-	Remaining users are not - can only be made admin by an admin
+Implement Admin User
 
 ------------------------------------------------
 
