@@ -1,6 +1,6 @@
 package com.acuicola2h.monitor.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -74,7 +74,7 @@ public class TankMeasurement {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date")
-    private Date date;
+    private LocalDateTime date;
     
 //    public Long getBatchId() {
 //    	return this.batch != null ? this.batch.getId() : null;

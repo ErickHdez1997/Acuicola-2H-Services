@@ -1,6 +1,7 @@
 package com.acuicola2h.monitor.service;
 
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class TankMeasurementService {
         // Create a dummy batch
         Batch batch = new Batch();
         batch.setFishTank(fishTank);
-        batch.setStartDate(new Date());
+        batch.setStartDate(LocalDate.now());
         batch.setInProgress(true);
         batch.setFishPlanted(100);
         batch = batchService.saveBatch(batch);
@@ -73,7 +74,7 @@ public class TankMeasurementService {
             measurement.setDeaths((int)Math.round(Math.random()*40));
             LocalDateTime dateTime = LocalDateTime.now();
             LocalDateTime modifiedDateTime = dateTime.plusHours(12*i);
-            measurement.setDate(Date.from(modifiedDateTime.atZone(ZoneId.systemDefault()).toInstant()));
+            measurement.setDate(modifiedDateTime);
             measurements.add(tankMeasurementRepository.save(measurement));
         }
 

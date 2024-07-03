@@ -1,6 +1,6 @@
 package com.acuicola2h.monitor.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -40,12 +40,12 @@ public class Batch {
     private FishTank fishTank;
 
     @Column(name = "start_date")
-    private Date startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private Date endDate;
+    private LocalDate endDate;
 
-    @Column(name = "in_progress")
+    @Column(name = "in_progress", nullable = false)
     private boolean inProgress;
 
     @Column(name = "fish_planted")

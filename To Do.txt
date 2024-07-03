@@ -35,6 +35,13 @@ Create batch
 Add/remove/modify entry
 ------
 Summary
+Selectable batch
+	When selected show data
+	Ability to add entry
+	Ability to remove entry
+	Ability to delete batch
+		Keeps data - just decouples batch from tank and sets to disabled
+		
 # Of Active Batches
 # Of Parameters in danger last day & last 7 days
 # Of measurements entered
