@@ -41,42 +41,65 @@ public class TankMeasurementService {
     }
     
     public List<TankMeasurement> createTestTank() {
-    	// Create a dummy fish tank
-        FishTank fishTank = new FishTank();
-        fishTank.setName("Dummy Tank");
-        fishTank = fishTankService.saveFishTank(fishTank);
-
-        // Create a dummy batch
-        Batch batch = new Batch();
-        batch.setFishTank(fishTank);
-        batch.setStartDate(LocalDate.now());
-        batch.setInProgress(true);
-        batch.setFishPlanted(100);
-        batch = batchService.saveBatch(batch);
+    	
+    	List<FishTank> fishTanks = fishTankService.getAllFishTanks();
         
-        DecimalFormat df = new DecimalFormat("#.###");
-        
-        // Create multiple dummy measurements
-        List<TankMeasurement> measurements = new ArrayList<>();
-        for (int i = 0; i < (int)Math.round(Math.random()*50) ; i++) {
-            TankMeasurement measurement = new TankMeasurement();
-            measurement.setBatch(batch);
-            measurement.setFishTank(fishTank);
-            measurement.setOxygen(Double.parseDouble(df.format(Math.random()*10)));
-            measurement.setPH(Double.parseDouble(df.format(Math.random()*12)));
-            measurement.setTemperature(Double.parseDouble(df.format(Math.random()*40)));
-            measurement.setSalinity(Double.parseDouble(df.format(Math.random()*30)));
-            measurement.setNitrate(Double.parseDouble(df.format(Math.random()*2)));
-            measurement.setNitrite(Double.parseDouble(df.format(Math.random())));
-            measurement.setAmmonia(Double.parseDouble(df.format(Math.random())));
-            measurement.setTurbine(Double.parseDouble(df.format(Math.random())));
-            measurement.setAlkalinity(Double.parseDouble(df.format(Math.random()*100)));
-            measurement.setDeaths((int)Math.round(Math.random()*40));
-            LocalDateTime dateTime = LocalDateTime.now();
-            LocalDateTime modifiedDateTime = dateTime.plusHours(12*i);
-            measurement.setDate(modifiedDateTime);
-            measurements.add(tankMeasurementRepository.save(measurement));
+        if (fishTanks.size() == 0) {
+        	for (int i = 0; i < 24; i++) {
+        		// Create a dummy fish tank
+                FishTank fishTank = new FishTank();
+                fishTank.setName("Dummy Tank "+(i+1));
+                if (i % 2 == 0) {
+                	fishTank.setTankNotes("Dummy Note");
+                }
+                fishTank = fishTankService.saveFishTank(fishTank);
+        	}
+        	
+        } else {
+        	return null;
         }
+       
+        List<TankMeasurement> measurements = new ArrayList<>();
+        
+        for (int j = 0; j < 24; j++) {
+        	if (j % 3 == 0) {
+        		// Create a dummy batch
+                Batch batch = new Batch();
+                
+                FishTank tank = fishTankService.getTankById(j+1);
+                
+                batch.setFishTank(tank);
+                batch.setStartDate(LocalDate.now());
+                batch.setInProgress(true);
+                batch.setFishPlanted(100);
+                batch = batchService.saveBatch(batch);
+                
+                DecimalFormat df = new DecimalFormat("#.###");
+                
+                // Create multiple dummy measurements
+                for (int i = 0; i < (int)Math.round(Math.random()*50) ; i++) {
+                    TankMeasurement measurement = new TankMeasurement();
+                    measurement.setBatch(batch);
+                    measurement.setFishTank(tank);
+                    measurement.setOxygen(Double.parseDouble(df.format(Math.random()*10)));
+                    measurement.setPH(Double.parseDouble(df.format(Math.random()*12)));
+                    measurement.setTemperature(Double.parseDouble(df.format(Math.random()*40)));
+                    measurement.setSalinity(Double.parseDouble(df.format(Math.random()*30)));
+                    measurement.setNitrate(Double.parseDouble(df.format(Math.random()*2)));
+                    measurement.setNitrite(Double.parseDouble(df.format(Math.random())));
+                    measurement.setAmmonia(Double.parseDouble(df.format(Math.random())));
+                    measurement.setTurbine(Double.parseDouble(df.format(Math.random())));
+                    measurement.setAlkalinity(Double.parseDouble(df.format(Math.random()*100)));
+                    measurement.setDeaths((int)Math.round(Math.random()*40));
+                    LocalDateTime dateTime = LocalDateTime.now();
+                    LocalDateTime modifiedDateTime = dateTime.plusHours(12*i);
+                    measurement.setDate(modifiedDateTime);
+                    measurements.add(tankMeasurementRepository.save(measurement));
+                }
+        	}
+        }
+
+        
 
         return measurements;
     }

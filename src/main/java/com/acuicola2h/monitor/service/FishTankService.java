@@ -15,7 +15,20 @@ public class FishTankService {
     private FishTankRepository fishTankRepository;
 
     public List<FishTank> getAllFishTanks() {
-        return fishTankRepository.findAll();
+        List<FishTank> fishTanks = fishTankRepository.findAll();
+        fishTanks.forEach(fishTank -> fishTank.setActiveBatchId(fishTank.getActiveBatchId()));
+        return fishTanks;
+    }
+    
+    public FishTank saveNotes(FishTank fishTank) {
+	    FishTank tank = fishTankRepository.findById(fishTank.getId()).orElseThrow(() -> new RuntimeException("Tank not found"));
+	    tank.setTankNotes(fishTank.getTankNotes());
+	    return fishTankRepository.save(tank);
+    }
+    
+    public FishTank getTankById(long id) {
+    	FishTank tank = fishTankRepository.getReferenceById(id);
+    	return tank;
     }
 
     public FishTank saveFishTank(FishTank fishTank) {
