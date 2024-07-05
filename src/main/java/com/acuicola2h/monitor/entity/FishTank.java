@@ -28,8 +28,6 @@ public class FishTank {
 
     private String name; 
     
-    private String tankNotes;
-
     @OneToMany(mappedBy = "fishTank", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("tank-batch")
     private List<Batch> batches;

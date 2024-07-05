@@ -40,7 +40,7 @@ public class Controller {
 	@PostMapping(Constants.PROCESS_FILE_PATH)
     public List<String> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("sendEmail") String sendEmail) {
 		List<String> errorList = null;
-		LoggerUtility.log(getClass(), Level.INFO, "Entered upload method");
+//		LoggerUtility.log(getClass(), Level.INFO, "Entered upload method");
         try (InputStream inputStream = file.getInputStream(); Workbook workbook = WorkbookFactory.create(inputStream)) {
             Boolean email = Boolean.parseBoolean(sendEmail);
             errorList = excelBookService.processExcelFile(workbook, email);

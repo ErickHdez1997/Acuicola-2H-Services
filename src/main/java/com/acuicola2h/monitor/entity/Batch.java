@@ -16,6 +16,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
@@ -38,6 +39,10 @@ public class Batch {
     @JsonBackReference("tank-batch")
     @ToString.Exclude
     private FishTank fishTank;
+    
+    @Column(name = "batch_notes")
+    @Lob
+    private String batchNotes;
 
     @Column(name = "start_date")
     private LocalDate startDate;

@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.acuicola2h.monitor.dto.LoginRequestDto;
+import com.acuicola2h.monitor.dto.LoginResponseDto;
 import com.acuicola2h.monitor.entity.UserEntity;
 import com.acuicola2h.monitor.entity.UserPassword;
 import com.acuicola2h.monitor.repository.UserPasswordRepository;
@@ -33,17 +34,20 @@ public class AuthService {
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public String authenticate(LoginRequestDto loginRequest) {
-        UserEntity userEntity = userRepository.findByUsername(loginRequest.getUsername())
-                .orElse(null);
-
+    public LoginResponseDto authenticate(LoginRequestDto loginRequest) {
+        UserEntity userEntity = userRepository.findByUsername(loginRequest.getUsername()).orElse(null);
+        LoginResponseDto loginResponseDto = new LoginResponseDto();
+        
         if (userEntity != null) {
             UserPassword password = userPasswordRepository.findTopByUserOrderByDateChangedDesc(userEntity)
                     .orElse(null);
 
             if (password != null && passwordEncoder.matches(loginRequest.getPassword(), password.getEncryptedPassword())) {
                 // Generate a token (e.g., JWT) and return it
-                return generateToken(userEntity);
+                String token = generateToken(userEntity);
+                loginResponseDto.setToken(token);
+                loginResponseDto.setUserId(userEntity.getId());
+                return loginResponseDto;
             }
         }
         return null;

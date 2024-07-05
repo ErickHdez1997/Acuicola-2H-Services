@@ -20,12 +20,6 @@ public class FishTankService {
         return fishTanks;
     }
     
-    public FishTank saveNotes(FishTank fishTank) {
-	    FishTank tank = fishTankRepository.findById(fishTank.getId()).orElseThrow(() -> new RuntimeException("Tank not found"));
-	    tank.setTankNotes(fishTank.getTankNotes());
-	    return fishTankRepository.save(tank);
-    }
-    
     public FishTank getTankById(long id) {
     	FishTank tank = fishTankRepository.getReferenceById(id);
     	return tank;

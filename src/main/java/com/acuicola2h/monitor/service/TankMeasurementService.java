@@ -49,9 +49,6 @@ public class TankMeasurementService {
         		// Create a dummy fish tank
                 FishTank fishTank = new FishTank();
                 fishTank.setName("Dummy Tank "+(i+1));
-                if (i % 2 == 0) {
-                	fishTank.setTankNotes("Dummy Note");
-                }
                 fishTank = fishTankService.saveFishTank(fishTank);
         	}
         	

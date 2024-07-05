@@ -1,6 +1,5 @@
 package com.acuicola2h.monitor.service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +49,12 @@ public class BatchService {
 
     public Batch saveBatch(Batch batch) {
         return batchRepository.save(batch);
+    }
+    
+    public Batch saveNotes(Batch updateBatch) {
+    	Batch batch = batchRepository.findById(updateBatch.getId()).orElseThrow(() -> new RuntimeException("Batch not found"));
+    	batch.setBatchNotes(batch.getBatchNotes());
+	    return batchRepository.save(batch);
     }
 
 }

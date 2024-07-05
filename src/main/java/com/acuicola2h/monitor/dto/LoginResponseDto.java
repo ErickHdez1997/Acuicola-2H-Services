@@ -9,6 +9,9 @@ import lombok.ToString;
 @ToString
 public class LoginResponseDto {
 
+	long userId;
 	String token;
+	String responseStatus;
+	String responseMessage;
 	
 }
