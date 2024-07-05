@@ -35,7 +35,7 @@ public class Batch {
 
     @ManyToOne
     @JoinColumn(name = "fish_tank_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference("tank-batch")
     @ToString.Exclude
     private FishTank fishTank;
 
@@ -55,7 +55,7 @@ public class Batch {
     private int fishYield;
 
     @OneToMany(mappedBy = "batch", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference("batch-measurement")
     private List<TankMeasurement> measurements;
     
     public Long getFishTankId() {

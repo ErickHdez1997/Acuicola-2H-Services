@@ -31,7 +31,7 @@ public class FishTank {
     private String tankNotes;
 
     @OneToMany(mappedBy = "fishTank", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference("tank-batch")
     private List<Batch> batches;
     
     @Transient

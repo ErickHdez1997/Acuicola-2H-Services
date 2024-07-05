@@ -32,13 +32,13 @@ public class TankMeasurement {
 
     @ManyToOne
     @JoinColumn(name = "batch_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference("batch-measurement")
     @ToString.Exclude
     private Batch batch;
 
     @ManyToOne
     @JoinColumn(name = "fish_tank_id", nullable = false)
-    @JsonBackReference
+//    @JsonBackReference("tank-measurement")
     @ToString.Exclude
     private FishTank fishTank;
 
