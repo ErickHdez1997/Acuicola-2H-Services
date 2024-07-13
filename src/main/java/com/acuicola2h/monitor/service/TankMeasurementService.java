@@ -3,9 +3,7 @@ package com.acuicola2h.monitor.service;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,11 @@ import org.springframework.stereotype.Service;
 import com.acuicola2h.monitor.entity.Batch;
 import com.acuicola2h.monitor.entity.FishTank;
 import com.acuicola2h.monitor.entity.TankMeasurement;
+import com.acuicola2h.monitor.entity.TankMeasurementId;
+import com.acuicola2h.monitor.repository.BatchRepository;
 import com.acuicola2h.monitor.repository.TankMeasurementRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class TankMeasurementService {
@@ -27,6 +29,9 @@ public class TankMeasurementService {
     
     @Autowired
     private BatchService batchService;
+    
+    @Autowired
+    private BatchRepository	batchRepository;
 
     public List<TankMeasurement> getMeasurementsByBatch(Long batchId) {
         return tankMeasurementRepository.findByBatchId(batchId);
@@ -91,14 +96,25 @@ public class TankMeasurementService {
                     LocalDateTime dateTime = LocalDateTime.now();
                     LocalDateTime modifiedDateTime = dateTime.plusHours(12*i);
                     measurement.setDate(modifiedDateTime);
-                    measurements.add(tankMeasurementRepository.save(measurement));
+//                    measurements.add(tankMeasurementRepository.save(measurement));
+                    measurements.add(createMeasurement(batch.getId(), measurement));
                 }
         	}
         }
 
-        
-
         return measurements;
+    }
+    
+    @Transactional
+    public TankMeasurement createMeasurement(Long batchId, TankMeasurement measurement) {
+        Batch batch = batchRepository.findById(batchId).orElseThrow(() -> new IllegalArgumentException("Invalid batch ID"));
+        Long nextMeasurementId = tankMeasurementRepository.findMaxMeasurementIdByBatchId(batchId).orElse(0L) + 1;
+
+        TankMeasurementId measurementId = new TankMeasurementId(batchId, nextMeasurementId);
+        measurement.setId(measurementId);
+        measurement.setBatch(batch);
+
+        return tankMeasurementRepository.save(measurement);
     }
 
 }

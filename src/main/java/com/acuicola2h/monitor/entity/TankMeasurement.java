@@ -7,12 +7,11 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Getter;
@@ -26,16 +25,26 @@ import lombok.ToString;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class TankMeasurement {
 
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//	@Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
+
+//    @ManyToOne
+//    @JoinColumn(name = "batch_id", nullable = false)
+//    @JsonBackReference("batch-measurement")
+//    @ToString.Exclude
+//    private Batch batch;
+	
+	@EmbeddedId
+    private TankMeasurementId id;
 
     @ManyToOne
+    @MapsId("batchId")
     @JoinColumn(name = "batch_id", nullable = false)
     @JsonBackReference("batch-measurement")
     @ToString.Exclude
     private Batch batch;
-
+    
     @ManyToOne
     @JoinColumn(name = "fish_tank_id", nullable = false)
 //    @JsonBackReference("tank-measurement")
