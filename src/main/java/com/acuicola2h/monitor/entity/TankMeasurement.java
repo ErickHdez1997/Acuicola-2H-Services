@@ -24,16 +24,6 @@ import lombok.ToString;
 @ToString
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class TankMeasurement {
-
-//	@Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-
-//    @ManyToOne
-//    @JoinColumn(name = "batch_id", nullable = false)
-//    @JsonBackReference("batch-measurement")
-//    @ToString.Exclude
-//    private Batch batch;
 	
 	@EmbeddedId
     private TankMeasurementId id;
@@ -47,7 +37,6 @@ public class TankMeasurement {
     
     @ManyToOne
     @JoinColumn(name = "fish_tank_id", nullable = false)
-//    @JsonBackReference("tank-measurement")
     @ToString.Exclude
     private FishTank fishTank;
 
@@ -85,11 +74,4 @@ public class TankMeasurement {
     @Column(name = "date")
     private LocalDateTime date;
     
-//    public Long getBatchId() {
-//    	return this.batch != null ? this.batch.getId() : null;
-//    }
-//    
-//    public Long getFishTankId() {
-//    	return this.fishTank != null ? this.fishTank.getId() : null;
-//    }
 }

@@ -5,15 +5,18 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.acuicola2h.monitor.dto.NewTankMeasurementRequest;
 import com.acuicola2h.monitor.entity.Batch;
 import com.acuicola2h.monitor.entity.FishTank;
 import com.acuicola2h.monitor.entity.TankMeasurement;
 import com.acuicola2h.monitor.entity.TankMeasurementId;
 import com.acuicola2h.monitor.repository.BatchRepository;
+import com.acuicola2h.monitor.repository.FishTankRepository;
 import com.acuicola2h.monitor.repository.TankMeasurementRepository;
 
 import jakarta.transaction.Transactional;
@@ -32,17 +35,48 @@ public class TankMeasurementService {
     
     @Autowired
     private BatchRepository	batchRepository;
+    
+    @Autowired
+    private FishTankRepository fishTankRepository;
 
     public List<TankMeasurement> getMeasurementsByBatch(Long batchId) {
-        return tankMeasurementRepository.findByBatchId(batchId);
+        return tankMeasurementRepository.findAllByBatchId(batchId);
     }
 
     public List<TankMeasurement> getMeasurementsByFishTank(Long fishTankId) {
         return tankMeasurementRepository.findByFishTankId(fishTankId);
     }
 
-    public TankMeasurement saveMeasurement(TankMeasurement measurement) {
-        return tankMeasurementRepository.save(measurement);
+    public TankMeasurement saveMeasurement(NewTankMeasurementRequest measurement) {
+    	FishTank tank = fishTankRepository.findById(measurement.getFishTankId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid tank ID"));
+        Batch batch = batchRepository.findById(measurement.getBatchId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid batch ID"));
+        Long nextMeasurementId = tankMeasurementRepository
+                .findMaxMeasurementIdByBatchId(measurement.getBatchId())
+                .orElse(0L) + 1;
+        TankMeasurement tankMeasurement = new TankMeasurement();
+        tankMeasurement.setFishTank(tank);
+        tankMeasurement.setAlkalinity(measurement.getAlkalinity());
+        tankMeasurement.setAmmonia(measurement.getAmmonia());
+        tankMeasurement.setDate(measurement.getDate());
+        tankMeasurement.setDeaths(measurement.getDeaths());
+        tankMeasurement.setNitrate(measurement.getNitrate());
+        tankMeasurement.setNitrite(measurement.getNitrite());
+        tankMeasurement.setOxygen(measurement.getOxygen());
+        tankMeasurement.setPH(measurement.getPH());
+        tankMeasurement.setSalinity(measurement.getSalinity());
+        
+        TankMeasurementId measurementId = new TankMeasurementId(measurement.getBatchId(), nextMeasurementId);
+        tankMeasurement.setId(measurementId);
+        tankMeasurement.setBatch(batch);
+        return tankMeasurementRepository.save(tankMeasurement);
+    }
+    
+    public List<TankMeasurement> deleteMeasurements(List<TankMeasurement> measurementsToDelete) {
+    	tankMeasurementRepository.deleteAllInBatch(measurementsToDelete);
+    	long batchId = measurementsToDelete.get(0).getId().getBatchId();
+    	return tankMeasurementRepository.findAllByBatchId(batchId);
     }
     
     public List<TankMeasurement> createTestTank() {

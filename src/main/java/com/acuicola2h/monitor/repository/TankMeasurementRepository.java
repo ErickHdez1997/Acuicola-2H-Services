@@ -10,7 +10,8 @@ import com.acuicola2h.monitor.entity.TankMeasurement;
 import com.acuicola2h.monitor.entity.TankMeasurementId;
 
 public interface TankMeasurementRepository extends JpaRepository<TankMeasurement, TankMeasurementId> {
-    List<TankMeasurement> findByBatchId(Long batchId);
+	
+    List<TankMeasurement> findAllByBatchId(Long batchId);
     List<TankMeasurement> findByFishTankId(Long fishTankId);
     @Query("SELECT MAX(tm.id.measurementId) FROM TankMeasurement tm WHERE tm.id.batchId = :batchId")
     Optional<Long> findMaxMeasurementIdByBatchId(Long batchId);
